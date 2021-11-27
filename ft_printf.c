@@ -3,7 +3,6 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
-
 /* NOTAS
 
 order:
@@ -35,9 +34,9 @@ precision:'.' ----
 
 */
 
-size_t	ft_strlen(const char *s)
+size_t ft_strlen(const char *s)
 {
-	size_t	i;
+	size_t i;
 
 	i = 0;
 	while (s[i] != '\0')
@@ -47,10 +46,10 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_substr(char const *s, unsigned int start, int len)
+char *ft_substr(char const *s, unsigned int start, int len)
 {
-	char	*ptr;
-	int	index;
+	char *ptr;
+	int index;
 
 	ptr = malloc(len + 1);
 	if (!ptr)
@@ -72,8 +71,7 @@ int ft_atoi(const char *str)
 
 	sign = 1;
 	number = 0;
-	while (*str == ' ' || *str == '\f' || *str == '\n'
-		|| *str == '\r' || *str == '\t' || *str == '\v')
+	while (*str == ' ' || *str == '\f' || *str == '\n' || *str == '\r' || *str == '\t' || *str == '\v')
 		str++;
 	if (*str == '+' || *str == '-')
 	{
@@ -127,16 +125,17 @@ frt_settings *set_tab(frt_settings *tab)
 	return (tab);
 }
 
-void ft_print_percent(frt_settings *tab, const char *format, int i)
+void ft_print_percent(frt_settings *tab, char percent)
 {
-	tab->t_length += write(1, &format[i], 1);
+	char a = percent;
+	tab->t_length += write(1, &a, 1);
 	set_tab(tab);
 }
 
 int ft_convert(frt_settings *tab, const char *format, int i)
 {
 	if (format[i] == '%')
-		ft_print_percent(tab, format, i);
+		ft_print_percent(tab, format[i]);
 	/*else if (format[i] == 'c')
 		ft_print_char(tab);
 	else if (format[i] == 's')
@@ -237,8 +236,8 @@ int ft_analise_flags(frt_settings *tab, const char *format, int i)
 int ft_printf(const char *format, ...)
 {
 	frt_settings *tab;
-	int	i;
-	int	t_printed;
+	int i;
+	int t_printed;
 
 	tab = (frt_settings *)malloc(sizeof(tab));
 	if (!tab)
@@ -257,10 +256,10 @@ int ft_printf(const char *format, ...)
 	va_end(tab->args);
 	t_printed += tab->t_length;
 	free(tab);
-	return(t_printed);
+	return (t_printed);
 }
 
 int main()
 {
-	ft_printf("%+-2%\n");
+	ft_printf("% %\n");
 }
