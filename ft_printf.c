@@ -32,6 +32,31 @@ precision:'.' ----
 (with diuxX) -- gives the minimum number of digits to appear
 (with s) -- gives the maximum number of characters to be printed
 
+
+- c conversion ----
+care for:
+-width
+-dash
+if '-' with width: left align (number of padding = width - 1)
+
+- s conversions ----
+care for:
+-width
+-dash
+-precision
+-if '-' with width: left align (number of padding = width - len(s))
+-precision gives the maximum number of characters to be written 
+(deleting letters from the end)
+
+- d conversions ----
+('+' and ' ') -- ignore ' '
+(0 and -) -- ignore 0
+(. and 0) -- ignore 0
+'.' - gives the minimum number of digits to appear (puts zeros at the left)
+1 - convert number to string
+2 - if  (!('.' || '-') && (width)): add (width - len(string)) zeros to beguining of str
+3 - if + and number is positive add + to the first char of string unless that is != 0 (in that case add to before the first char)
+
 */
 
 size_t ft_strlen(const char *s)
@@ -40,22 +65,22 @@ size_t ft_strlen(const char *s)
 
 	i = 0;
 	while (s[i] != '\0')
-	{
 		i++;
-	}
 	return (i);
 }
 
-char *ft_substr(char const *s, unsigned int start, int len)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char *ptr;
-	int index;
+	char	*ptr;
+	size_t	index;
 
-	ptr = malloc(len + 1);
+	if (!s)
+		return (NULL);
+	ptr = (char *)malloc((len + 1) * sizeof(char));
 	if (!ptr)
 		return (NULL);
 	index = 0;
-	while (index < len)
+	while (index < len && s[start + index])
 	{
 		ptr[index] = s[start + index];
 		index++;
@@ -132,13 +157,18 @@ void ft_print_percent(frt_settings *tab, char percent)
 	set_tab(tab);
 }
 
+void ft_print_char(tab)
+{
+	
+}
+
 int ft_convert(frt_settings *tab, const char *format, int i)
 {
 	if (format[i] == '%')
 		ft_print_percent(tab, format[i]);
-	/*else if (format[i] == 'c')
+	else if (format[i] == 'c')
 		ft_print_char(tab);
-	else if (format[i] == 's')
+	/*else if (format[i] == 's')
 		ft_print_string(tab);
 	else if (format[i] == 'p')
 		ft_print_void(tab);
@@ -261,5 +291,5 @@ int ft_printf(const char *format, ...)
 
 int main()
 {
-	ft_printf("% %\n");
+	ft_printf("%22%\n");
 }
