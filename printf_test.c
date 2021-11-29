@@ -58,6 +58,6 @@ care for:
 
 int main()
 {
-	int a = 5;
-	printf("0%+3d0\n", a);
+	char a = 'c';
+	printf("0%-2.0c0\n", a);
 }

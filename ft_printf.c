@@ -150,6 +150,15 @@ frt_settings *set_tab(frt_settings *tab)
 	return (tab);
 }
 
+void ft_print_padding(frt_settings *tab, char pad, int times)
+{
+	int i;
+
+	i = -1;
+	while (++i < times)
+		tab->t_length += write(1, &pad, 1);
+}
+
 void ft_print_percent(frt_settings *tab, char percent)
 {
 	char a = percent;
@@ -157,20 +166,94 @@ void ft_print_percent(frt_settings *tab, char percent)
 	set_tab(tab);
 }
 
-void ft_print_char(tab)
+void ft_print_char(frt_settings *tab)
 {
-	
+	char a;
+
+	a = va_arg(tab->args, int);
+	if (tab->width && !tab->dash)
+		ft_print_padding(tab, ' ', (tab->width - 1));
+	tab->t_length += write(1, &a, 1);
+	if (tab->width && tab->dash)
+		ft_print_padding(tab, ' ', (tab->width - 1));
+	set_tab(tab);
+}
+
+void ft_print_s_dash(frt_settings *tab, const char *str)
+{
+	if (tab->point && tab->precision <= ft_strlen(str))
+	{
+		tab->t_length += write(1, str, tab->precision);
+		ft_print_padding(tab, ' ', (tab->width - tab->precision));
+	}
+	else
+	{
+		tab->t_length += write(1, str, ft_strlen(str));
+		ft_print_padding(tab, ' ', (tab->width - ft_strlen(str)));
+	}
+}
+
+void ft_print_s_no_dash(frt_settings *tab, const char *str)
+{
+	if (tab->point && tab->precision <= ft_strlen(str))
+	{
+		ft_print_padding(tab, ' ', (tab->width - tab->precision));
+		tab->t_length += write(1, str, tab->precision);
+	}
+	else
+	{
+		ft_print_padding(tab, ' ', (tab->width - ft_strlen(str)));
+		tab->t_length += write(1, str, ft_strlen(str));
+	}
+}
+
+void ft_print_string(frt_settings *tab)
+{
+	char *str;
+	int i;
+
+	i = -1;
+	str = va_arg(tab->args, char *);
+
+	if (tab->width)
+	{
+		if (tab->dash)
+			ft_print_s_dash(tab, str);
+		else
+			ft_print_s_no_dash(tab, str);
+	}
+	else
+	{
+		if (tab->point && tab->precision <= ft_strlen(str))
+			tab->t_length += write(1, str, tab->precision);
+		else
+			tab->t_length += write(1, str, ft_strlen(str));
+	}
+	set_tab(tab);
+}
+
+int ft_is_format(char letter, char *conversions)
+{
+	int i;
+
+	i = -1;
+	while (conversions[++i])
+		if (letter == conversions[i])
+			return (1);
+	return (0);
 }
 
 int ft_convert(frt_settings *tab, const char *format, int i)
 {
+	while (format[i] && !ft_is_format(format[i], "%cspdiuxX"))
+		i++;
 	if (format[i] == '%')
 		ft_print_percent(tab, format[i]);
 	else if (format[i] == 'c')
 		ft_print_char(tab);
-	/*else if (format[i] == 's')
+	else if (format[i] == 's')
 		ft_print_string(tab);
-	else if (format[i] == 'p')
+	/*else if (format[i] == 'p')
 		ft_print_void(tab);
 	else if (format[i] == 'd')
 		ft_print_dec_num(tab);
@@ -226,26 +309,20 @@ int ft_analise_width(frt_settings *tab, const char *format, int i)
 	return (i);
 }
 
-int is_flag(char letter)
+int is_flag(char letter, char *flags)
 {
-	char conversions[5];
 	int i;
 
-	conversions[0] = '-';
-	conversions[1] = '0';
-	conversions[2] = '#';
-	conversions[3] = ' ';
-	conversions[4] = '+';
-	i = 0;
-	while (i < 5)
-		if (conversions[i++] == letter)
+	i = -1;
+	while (flags[++i])
+		if (flags[i] == letter)
 			return (1);
 	return (0);
 }
 
 int ft_analise_flags(frt_settings *tab, const char *format, int i)
 {
-	while (is_flag(format[i]))
+	while (is_flag(format[i], "-0# +"))
 	{
 		if (format[i] == '-')
 			tab->dash = 1;
@@ -269,7 +346,7 @@ int ft_printf(const char *format, ...)
 	int i;
 	int t_printed;
 
-	tab = (frt_settings *)malloc(sizeof(tab));
+	tab = malloc(sizeof(frt_settings));
 	if (!tab)
 		return (-1);
 	ft_initialise_tab(tab);
@@ -291,5 +368,6 @@ int ft_printf(const char *format, ...)
 
 int main()
 {
-	ft_printf("%22%\n");
+	char a = 'c';
+	ft_printf("0%-2.0c0\n", a);
 }
