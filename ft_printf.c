@@ -3,62 +3,6 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
-/* NOTAS
-
-order:
-1 - %
-2 - zero or more flags
-3 - optional minimum field width
-4 - optional precision
-
-conversions: (csdiupxX% with #0-+ and ' ') ----
-
-(# with x/X) -- add 0x/X to the beguining of the number
-0 -- the value should be zero padded
-(0 and -) -- ignore 0
-(diuxX with . and 0) -- ignore 0 (other conversions the behavior is undefined)
-('-') -- the value is to be left adjusted (padded with blanks in the right)
-(' ') -- a blank before positive number
-('+') -- put sign before number
-('+' and ' ') -- ignore ' '
-
-minimum field width: -----
-
-if converted value has fewer characters than the field width, pad with spaces 
-
-precision:'.' ----
-
-(if only '.') -- precision is zero
-(with diuxX) -- gives the minimum number of digits to appear
-(with s) -- gives the maximum number of characters to be printed
-
-
-- c conversion ----
-care for:
--width
--dash
-if '-' with width: left align (number of padding = width - 1)
-
-- s conversions ----
-care for:
--width
--dash
--precision
--if '-' with width: left align (number of padding = width - len(s))
--precision gives the maximum number of characters to be written 
-(deleting letters from the end)
-
-- d conversions ----
-('+' and ' ') -- ignore ' '
-(0 and -) -- ignore 0
-(. and 0) -- ignore 0
-'.' - gives the minimum number of digits to appear (puts zeros at the left)
-1 - convert number to string
-2 - if  (!('.' || '-') && (width)): add (width - len(string)) zeros to beguining of str
-3 - if + and number is positive add + to the first char of string unless that is != 0 (in that case add to before the first char)
-
-*/
-
 size_t ft_strlen(const char *s)
 {
 	size_t i;
@@ -232,6 +176,111 @@ void ft_print_string(frt_settings *tab)
 	set_tab(tab);
 }
 
+int ft_count_digits(unsigned long i)
+{
+	int x;
+
+	x = 1;
+	while (i > 9)
+	{
+		i = i / 10;
+		x++;
+	}
+	return (x);
+}
+
+char *ft_putnbr_base(char *str, unsigned long nbr, char *base)
+{
+	unsigned long	base_size;
+	unsigned long	x;
+
+	base_size = ft_strlen(base);
+	if (nbr < base_size)
+	{
+		*str = base[nbr];
+		str++;
+	}
+	else
+	{
+		x = nbr / base_size;
+		str = ft_putnbr_base(str, x, base);
+		x = nbr % base_size;
+		*str = base[x];
+		str++;
+	}
+	return (str);
+}
+
+char *long_to_string(unsigned long i)
+{
+	char *str;
+	char *mem;
+
+	str = malloc(sizeof(ft_count_digits(i) + 3));
+	if (!str)
+		return (NULL);
+	str[0] = '0';
+	str[1] = 'x';
+	mem = str;
+	mem += 2;
+    mem = ft_putnbr_base(mem, i, "0123456789abcdef");
+	*mem = '\0';
+	return (str);
+}
+
+void ft_print_p_zero_pad(frt_settings *tab, char *str)
+{
+	char *ptr;
+	int i;
+	char *mem;
+
+	if (tab->width <= ft_strlen(str))
+		tab->t_length += write(1, str, ft_strlen(str));
+	else
+	{
+		i = 0;
+		ptr = malloc(tab->width + 1);
+		if (!ptr)
+			return ;
+		mem = ptr;
+		*mem++ = '0';
+		*mem++ = 'x';
+		while (i++ < (tab->width - ft_strlen(str)))
+			*mem++ = '0';
+		str += 2;
+		while(*str)
+			*mem++ = *str++;
+		*mem = '\0';
+		tab->t_length += write(1, ptr, ft_strlen(ptr));
+		free(ptr);
+	}
+}
+
+void ft_print_void(frt_settings *tab)
+{
+	unsigned long nbr;
+	char *str;
+
+	nbr = (unsigned long)va_arg(tab->args, void *);
+	str = long_to_string(nbr);
+	if (tab->width && tab->dash)
+	{
+		tab->t_length += write(1, str, ft_strlen(str));
+		ft_print_padding(tab, ' ', (tab->width - ft_strlen(str)));
+	}
+	else if (tab->width && tab->zero)
+		ft_print_p_zero_pad(tab, str);
+	else if (tab->width > ft_strlen(str))
+	{
+		tab->t_length += write(1, " ", (tab->width - ft_strlen(str)));
+		tab->t_length += write(1, str, ft_strlen(str));
+	}
+	else
+		tab->t_length += write(1, str, ft_strlen(str));
+	free(str);
+	set_tab(tab);
+}
+
 int ft_is_format(char letter, char *conversions)
 {
 	int i;
@@ -253,9 +302,9 @@ int ft_convert(frt_settings *tab, const char *format, int i)
 		ft_print_char(tab);
 	else if (format[i] == 's')
 		ft_print_string(tab);
-	/*else if (format[i] == 'p')
+	else if (format[i] == 'p')
 		ft_print_void(tab);
-	else if (format[i] == 'd')
+	/*else if (format[i] == 'd')
 		ft_print_dec_num(tab);
 	else if (format[i] == 'i')
 		ft_print_int(tab);
@@ -369,5 +418,5 @@ int ft_printf(const char *format, ...)
 int main()
 {
 	char a = 'c';
-	ft_printf("0%-2.0c0\n", a);
+	ft_printf("0%-05.0p0\n", a);
 }
