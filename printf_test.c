@@ -4,6 +4,6 @@
 
 int	main(void)
 {
-	char *var = "asd";
-	printf("0%-8p0\n", *var);
+	int i = 6;
+	printf("0%d0\n", i);
 }

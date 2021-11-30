@@ -53,5 +53,10 @@ cares for:
 (. and 0) -- ignore 0
 '.' - gives the minimum number of digits to appear (puts zeros at the left)
 1 - convert number to string
-2 - if  (!('.' || '-') && (width)): add (width - len(string)) zeros to beguining of str
-3 - if + and number is positive add + to the first char of string unless that is != 0 (in that case add to before the first char)
+2 - if precision > strlen(str) : add zeros to beguining of str
+3 - if zero && !point && !dash && width > strlen(str): add zeros to beguining of str
+4 - if plus && number > 0
+	if str[0] == 0 : add '+' to str[0]
+	else : add '+' to beguining of str
+5 - else if space and number is positive add ' ' to beguining of str
+6 - if width > strlen(str) && dash : print str and add spaces

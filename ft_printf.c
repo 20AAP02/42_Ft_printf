@@ -56,6 +56,60 @@ int ft_atoi(const char *str)
 	return (number * sign);
 }
 
+int	number_of_digits(long long nb)
+{
+	int	i;
+
+	i = 1;
+	if (nb < 0)
+	{
+		i++;
+		nb *= -1;
+	}
+	while (nb > 9)
+	{
+		nb /= 10;
+		i++;
+	}
+	return (i);
+}
+
+void	pass_int_to_str(long long *nb, char *str, int *i)
+{
+	while (*nb > 0)
+	{
+		str[*i] = (*nb % 10) + 48;
+		*nb /= 10;
+		*i -= 1;
+	}
+}
+
+char	*ft_itoa(int n)
+{
+	char		*str;
+	long long	nb;
+	int			i;
+
+	nb = n;
+	i = number_of_digits(nb);
+	str = malloc(i + 1);
+	if (!str)
+		return (NULL);
+	str[i--] = 0;
+	if (nb < 0)
+	{
+		nb *= -1;
+		str[0] = '-';
+	}
+	if (nb == 0)
+	{
+		str[0] = '0';
+		return (str);
+	}
+	pass_int_to_str(&nb, str, &i);
+	return (str);
+}
+
 typedef struct print_settings
 {
 	va_list args;
@@ -216,7 +270,7 @@ char *long_to_string(unsigned long i)
 	char *str;
 	char *mem;
 
-	str = malloc(sizeof(ft_count_digits(i) + 3));
+	str = malloc(ft_count_digits(i) + 3);
 	if (!str)
 		return (NULL);
 	str[0] = '0';
@@ -281,6 +335,18 @@ void ft_print_void(frt_settings *tab)
 	set_tab(tab);
 }
 
+void ft_print_dec_num(frt_settings *tab)
+{
+	int nbr;
+	char *str;
+
+	nbr = va_arg(tab->args, int);
+	str = ft_itoa(nbr);
+
+	free(str);
+	set_tab(tab);
+}
+
 int ft_is_format(char letter, char *conversions)
 {
 	int i;
@@ -304,9 +370,9 @@ int ft_convert(frt_settings *tab, const char *format, int i)
 		ft_print_string(tab);
 	else if (format[i] == 'p')
 		ft_print_void(tab);
-	/*else if (format[i] == 'd')
+	else if (format[i] == 'd')
 		ft_print_dec_num(tab);
-	else if (format[i] == 'i')
+	/*else if (format[i] == 'i')
 		ft_print_int(tab);
 	else if (format[i] == 'u')
 		ft_print_unsigned_dec(tab);
@@ -324,8 +390,9 @@ int ft_analise_precision(frt_settings *tab, const char *format, int i)
 
 	tab->point = 1;
 	j = i;
-	while (format[i] > 48 && format[i] < 58)
-		i++;
+	if (format[i] > 48 && format[i] < 58)
+		while (format[i] > 47 && format[i] < 58)
+			i++;
 	if (j != i)
 	{
 		precision = ft_substr(format, j, i - j);
@@ -375,13 +442,13 @@ int ft_analise_flags(frt_settings *tab, const char *format, int i)
 	{
 		if (format[i] == '-')
 			tab->dash = 1;
-		if (format[i] == '0')
+		else if (format[i] == '0')
 			tab->zero = 1;
-		if (format[i] == '#')
+		else if (format[i] == '#')
 			tab->hash = 1;
-		if (format[i] == ' ')
+		else if (format[i] == ' ')
 			tab->space = 1;
-		if (format[i] == '+')
+		else if (format[i] == '+')
 			tab->plus = 1;
 		i++;
 	}
