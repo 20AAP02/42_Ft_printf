@@ -4,6 +4,6 @@
 
 int	main(void)
 {
-	int i = 6;
-	printf("0%d0\n", i);
+	unsigned int i = 342002;
+	printf("%#x\n", i);
 }

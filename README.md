@@ -52,11 +52,22 @@ cares for:
 (0 and -) -- ignore 0
 (. and 0) -- ignore 0
 '.' - gives the minimum number of digits to appear (puts zeros at the left)
-1 - convert number to string
+1 - convert number to string without sign
 2 - if precision > strlen(str) : add zeros to beguining of str
-3 - if zero && !point && !dash && width > strlen(str): add zeros to beguining of str
-4 - if plus && number > 0
-	if str[0] == 0 : add '+' to str[0]
-	else : add '+' to beguining of str
-5 - else if space and number is positive add ' ' to beguining of str
-6 - if width > strlen(str) && dash : print str and add spaces
+3 - if ((nbr < 0) || (nbr > 0 && (space || plus))) : add sign/space to beguining of str
+4 - if width > ft_strlen:
+		if (dash) : add spaces to end of str
+		else if (zero) : add zeros to beguining of str
+		else : add spaces to beguining of str
+
+- i conversions ----
+- same as d conversion
+
+- u conversions ----
+- same as d conversion a side from:
+	- va_arg receives an unsigned int (instead of a int)
+	- itoa has to receive an unsigned int (instead of a int)
+	- '+' and ' ' flags are ignored
+	- and obviously no need to verify if nbr < 0 
+
+- x and X conversions ----

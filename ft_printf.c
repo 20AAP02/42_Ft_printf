@@ -62,10 +62,7 @@ int	number_of_digits(long long nb)
 
 	i = 1;
 	if (nb < 0)
-	{
-		i++;
 		nb *= -1;
-	}
 	while (nb > 9)
 	{
 		nb /= 10;
@@ -97,10 +94,30 @@ char	*ft_itoa(int n)
 		return (NULL);
 	str[i--] = 0;
 	if (nb < 0)
-	{
 		nb *= -1;
-		str[0] = '-';
+	if (nb == 0)
+	{
+		str[0] = '0';
+		return (str);
 	}
+	pass_int_to_str(&nb, str, &i);
+	return (str);
+}
+
+char *ft_itoa_unsigned_int(unsigned int n)
+{
+	char		*str;
+	long long	nb;
+	int			i;
+
+	nb = n;
+	i = number_of_digits(nb);
+	str = malloc(i + 1);
+	if (!str)
+		return (NULL);
+	str[i--] = 0;
+	if (nb < 0)
+		nb *= -1;
 	if (nb == 0)
 	{
 		str[0] = '0';
@@ -335,14 +352,119 @@ void ft_print_void(frt_settings *tab)
 	set_tab(tab);
 }
 
+char *ft_add_char_to_beg_str(char *str, int times, char a)
+{
+	char *str_mem;
+	char *ptr;
+	char *mem;
+
+	str_mem = str;
+	ptr = malloc(times + ft_strlen(str) + 1);
+	if (!ptr)
+		return (NULL);
+	mem = ptr;
+	while (times--)
+		*mem++ = a;
+	while (*str)
+		*mem++ = *str++;
+	*mem = '\0';
+	free(str_mem);
+	return (ptr);
+}
+
+char *ft_add_char_to_end_str(char *str, int times, char a)
+{
+	char *str_mem;
+	char *ptr;
+	char *mem;
+
+	str_mem = str;
+	ptr = malloc(times + ft_strlen(str) + 1);
+	if (!ptr)
+		return (NULL);
+	mem = ptr;
+	while(*str)
+		*mem++ = *str++;
+	while(times--)
+		*mem++ = a;
+	*mem = '\0';
+	free(str_mem);
+	return(ptr);
+}
+
+void ft_print_dec_update_tab(frt_settings *tab)
+{
+	if (tab->plus && tab->space)
+		tab->space = 0;
+	if (tab->zero && tab->dash)
+		tab->zero = 0;
+	if (tab->point && tab->zero)
+		tab->zero = 0;
+}
+
+void ft_print_dec_str(frt_settings *tab, char *str)
+{
+	while(*str)
+		tab->t_length += write(1, str++, 1);
+}
+
+// to big of a function (31 lines)
 void ft_print_dec_num(frt_settings *tab)
 {
 	int nbr;
 	char *str;
+	char *ptr;
 
 	nbr = va_arg(tab->args, int);
+	if (!nbr && !tab->precision && tab->point)
+	{
+		set_tab(tab);
+		return ;
+	}
 	str = ft_itoa(nbr);
+	ft_print_dec_update_tab(tab);
+	if (tab->precision > ft_strlen(str))
+		str = ft_add_char_to_beg_str(str, tab->precision - ft_strlen(str), '0');
+	if (nbr < 0)
+		str = ft_add_char_to_beg_str(str, 1, '-');
+	else if (tab->plus)
+		str = ft_add_char_to_beg_str(str, 1, '+');
+	else if (tab->space)
+		str = ft_add_char_to_beg_str(str, 1, ' ');
+	if (tab->width > ft_strlen(str) && tab->dash)
+		str = ft_add_char_to_end_str(str, tab->width - ft_strlen(str), ' ');
+	else if (tab->width > ft_strlen(str) && tab->zero)
+		str = ft_add_char_to_beg_str(str, tab->width - ft_strlen(str), '0');
+	else if (tab->width > ft_strlen(str))
+		str = ft_add_char_to_beg_str(str, tab->width - ft_strlen(str), ' ');
+	ft_print_dec_str(tab, str);
+	free(str);
+	set_tab(tab);
+}
 
+void ft_print_unsigned_dec(frt_settings *tab)
+{
+	unsigned int nbr;
+	char *str;
+	char *ptr;
+
+	nbr = va_arg(tab->args, unsigned int);
+	if (!nbr && !tab->precision && tab->point)
+	{
+		set_tab(tab);
+		return ;
+	}
+	str = ft_itoa_unsigned_int(nbr);
+	ft_print_dec_update_tab(tab);
+	if (tab->precision > ft_strlen(str))
+		str = ft_add_char_to_beg_str(str, tab->precision - ft_strlen(str), '0');
+	if (tab->width > ft_strlen(str) && tab->dash)
+		str = ft_add_char_to_end_str(str, tab->width - ft_strlen(str), ' ');
+	else if (tab->width > ft_strlen(str) && tab->zero)
+		str = ft_add_char_to_beg_str(str, tab->width - ft_strlen(str), '0');
+	else if (tab->width > ft_strlen(str))
+		str = ft_add_char_to_beg_str(str, tab->width - ft_strlen(str), ' ');
+	ft_print_dec_str(tab, str);
 	free(str);
 	set_tab(tab);
 }
@@ -370,13 +492,11 @@ int ft_convert(frt_settings *tab, const char *format, int i)
 		ft_print_string(tab);
 	else if (format[i] == 'p')
 		ft_print_void(tab);
-	else if (format[i] == 'd')
+	else if (format[i] == 'd' || format[i] == 'i')
 		ft_print_dec_num(tab);
-	/*else if (format[i] == 'i')
-		ft_print_int(tab);
 	else if (format[i] == 'u')
 		ft_print_unsigned_dec(tab);
-	else if (format[i] == 'x')
+	/*else if (format[i] == 'x')
 		ft_print_num_hex_lower(tab);
 	else if (format[i] == 'X')
 		ft_print_num_hex_upper(tab);*/
@@ -484,6 +604,7 @@ int ft_printf(const char *format, ...)
 
 int main()
 {
-	char a = 'c';
-	ft_printf("0%-05.0p0\n", a);
+	unsigned int i = 1;
+	ft_printf("%u\n", i);
+	printf("%u\n", i);
 }
