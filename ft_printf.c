@@ -1,11 +1,22 @@
-#include <unistd.h>
-#include <stdio.h> // official printf
-#include <stdarg.h>
-#include <stdlib.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: antonio <antonio@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/03 15:14:57 by antonio           #+#    #+#             */
+/*   Updated: 2021/12/03 15:24:06 by antonio          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-size_t ft_strlen(const char *s)
+#include <unistd.h> // write
+#include <stdarg.h> // for variadic function
+#include <stdlib.h> // malloc
+
+size_t	ft_strlen(const char *s)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (s[i] != '\0')
@@ -33,14 +44,15 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (ptr);
 }
 
-int ft_atoi(const char *str)
+int	ft_atoi(const char *str)
 {
-	int number;
-	int sign;
+	int	number;
+	int	sign;
 
 	sign = 1;
 	number = 0;
-	while (*str == ' ' || *str == '\f' || *str == '\n' || *str == '\r' || *str == '\t' || *str == '\v')
+	while (*str == ' ' || *str == '\f' || *str == '\n' || *str == '\r'
+		|| *str == '\t' || *str == '\v')
 		str++;
 	if (*str == '+' || *str == '-')
 	{
@@ -104,7 +116,7 @@ char	*ft_itoa(int n)
 	return (str);
 }
 
-char *ft_itoa_unsigned_int(unsigned int n)
+char	*ft_itoa_unsigned_int(unsigned int n)
 {
 	char		*str;
 	long long	nb;
@@ -127,21 +139,21 @@ char *ft_itoa_unsigned_int(unsigned int n)
 	return (str);
 }
 
-typedef struct print_settings
+typedef struct t_print_settings
 {
-	va_list args;
-	int hash;
-	int zero;
-	int dash;
-	int space;
-	int plus;
-	int width;
-	int precision;
-	int point;
-	int t_length;
-} frt_settings;
+	va_list	args;
+	int		hash;
+	int		zero;
+	int		dash;
+	int		space;
+	int		plus;
+	int		width;
+	int		precision;
+	int		point;
+	int		t_length;
+}	t_settings;
 
-frt_settings *ft_initialise_tab(frt_settings *tab)
+t_settings	*ft_initialise_tab(t_settings *tab)
 {
 	tab->hash = 0;
 	tab->zero = 0;
@@ -155,9 +167,9 @@ frt_settings *ft_initialise_tab(frt_settings *tab)
 	return (tab);
 }
 
-frt_settings *set_tab(frt_settings *tab)
+t_settings	*set_tab(t_settings *tab)
 {
-	int i;
+	int	i;
 
 	i = tab->t_length;
 	ft_initialise_tab(tab);
@@ -165,25 +177,24 @@ frt_settings *set_tab(frt_settings *tab)
 	return (tab);
 }
 
-void ft_print_padding(frt_settings *tab, char pad, int times)
+void	ft_print_padding(t_settings *tab, char pad, int times)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < times)
 		tab->t_length += write(1, &pad, 1);
 }
 
-void ft_print_percent(frt_settings *tab, char percent)
+void	ft_print_percent(t_settings *tab, char percent)
 {
-	char a = percent;
-	tab->t_length += write(1, &a, 1);
+	tab->t_length += write(1, &percent, 1);
 	set_tab(tab);
 }
 
-void ft_print_char(frt_settings *tab)
+void	ft_print_char(t_settings *tab)
 {
-	char a;
+	char	a;
 
 	a = va_arg(tab->args, int);
 	if (tab->width && !tab->dash)
@@ -194,7 +205,7 @@ void ft_print_char(frt_settings *tab)
 	set_tab(tab);
 }
 
-void ft_print_s_dash(frt_settings *tab, const char *str)
+void	ft_print_s_dash(t_settings *tab, const char *str)
 {
 	if (tab->point && tab->precision <= ft_strlen(str))
 	{
@@ -208,7 +219,7 @@ void ft_print_s_dash(frt_settings *tab, const char *str)
 	}
 }
 
-void ft_print_s_no_dash(frt_settings *tab, const char *str)
+void	ft_print_s_no_dash(t_settings *tab, const char *str)
 {
 	if (tab->point && tab->precision <= ft_strlen(str))
 	{
@@ -222,14 +233,13 @@ void ft_print_s_no_dash(frt_settings *tab, const char *str)
 	}
 }
 
-void ft_print_string(frt_settings *tab)
+void	ft_print_string(t_settings *tab)
 {
-	char *str;
-	int i;
+	char	*str;
+	int		i;
 
 	i = -1;
 	str = va_arg(tab->args, char *);
-
 	if (tab->width)
 	{
 		if (tab->dash)
@@ -247,9 +257,9 @@ void ft_print_string(frt_settings *tab)
 	set_tab(tab);
 }
 
-int ft_count_digits(unsigned long i)
+int	ft_count_digits(unsigned long i)
 {
-	int x;
+	int	x;
 
 	x = 1;
 	while (i > 9)
@@ -260,7 +270,7 @@ int ft_count_digits(unsigned long i)
 	return (x);
 }
 
-char *ft_putnbr_base(char *str, unsigned long nbr, char *base)
+char	*ft_putnbr_base(char *str, unsigned long nbr, char *base)
 {
 	unsigned long	base_size;
 	unsigned long	x;
@@ -282,10 +292,10 @@ char *ft_putnbr_base(char *str, unsigned long nbr, char *base)
 	return (str);
 }
 
-char *long_to_string(unsigned long i)
+char	*long_to_string(unsigned long i)
 {
-	char *str;
-	char *mem;
+	char	*str;
+	char	*mem;
 
 	str = malloc(ft_count_digits(i) + 3);
 	if (!str)
@@ -294,16 +304,16 @@ char *long_to_string(unsigned long i)
 	str[1] = 'x';
 	mem = str;
 	mem += 2;
-    mem = ft_putnbr_base(mem, i, "0123456789abcdef");
+	mem = ft_putnbr_base(mem, i, "0123456789abcdef");
 	*mem = '\0';
 	return (str);
 }
 
-void ft_print_p_zero_pad(frt_settings *tab, char *str)
+void	ft_print_p_zero_pad(t_settings *tab, char *str)
 {
-	char *ptr;
-	int i;
-	char *mem;
+	char	*ptr;
+	int		i;
+	char	*mem;
 
 	if (tab->width <= ft_strlen(str))
 		tab->t_length += write(1, str, ft_strlen(str));
@@ -319,7 +329,7 @@ void ft_print_p_zero_pad(frt_settings *tab, char *str)
 		while (i++ < (tab->width - ft_strlen(str)))
 			*mem++ = '0';
 		str += 2;
-		while(*str)
+		while (*str)
 			*mem++ = *str++;
 		*mem = '\0';
 		tab->t_length += write(1, ptr, ft_strlen(ptr));
@@ -327,10 +337,10 @@ void ft_print_p_zero_pad(frt_settings *tab, char *str)
 	}
 }
 
-void ft_print_void(frt_settings *tab)
+void	ft_print_void(t_settings *tab)
 {
-	unsigned long nbr;
-	char *str;
+	unsigned long	nbr;
+	char			*str;
 
 	nbr = (unsigned long)va_arg(tab->args, void *);
 	str = long_to_string(nbr);
@@ -352,11 +362,11 @@ void ft_print_void(frt_settings *tab)
 	set_tab(tab);
 }
 
-char *ft_add_char_to_beg_str(char *str, int times, char a)
+char	*ft_add_char_to_beg_str(char *str, int times, char a)
 {
-	char *str_mem;
-	char *ptr;
-	char *mem;
+	char	*str_mem;
+	char	*ptr;
+	char	*mem;
 
 	str_mem = str;
 	ptr = malloc(times + ft_strlen(str) + 1);
@@ -372,27 +382,27 @@ char *ft_add_char_to_beg_str(char *str, int times, char a)
 	return (ptr);
 }
 
-char *ft_add_char_to_end_str(char *str, int times, char a)
+char	*ft_add_char_to_end_str(char *str, int times, char a)
 {
-	char *str_mem;
-	char *ptr;
-	char *mem;
+	char	*str_mem;
+	char	*ptr;
+	char	*mem;
 
 	str_mem = str;
 	ptr = malloc(times + ft_strlen(str) + 1);
 	if (!ptr)
 		return (NULL);
 	mem = ptr;
-	while(*str)
+	while (*str)
 		*mem++ = *str++;
-	while(times--)
+	while (times--)
 		*mem++ = a;
 	*mem = '\0';
 	free(str_mem);
-	return(ptr);
+	return (ptr);
 }
 
-void ft_print_dec_update_tab(frt_settings *tab)
+void	ft_print_dec_update_tab(t_settings *tab)
 {
 	if (tab->plus && tab->space)
 		tab->space = 0;
@@ -402,12 +412,24 @@ void ft_print_dec_update_tab(frt_settings *tab)
 		tab->zero = 0;
 }
 
-// to big of a function (31 lines)
-void ft_print_dec_num(frt_settings *tab)
+void	print_dec_num_block(t_settings *tab, char *str)
 {
-	int nbr;
-	char *str;
-	char *ptr;
+	if (tab->width > ft_strlen(str) && tab->dash)
+		str = ft_add_char_to_end_str(str, tab->width - ft_strlen(str), ' ');
+	else if (tab->width > ft_strlen(str) && tab->zero)
+		str = ft_add_char_to_beg_str(str, tab->width - ft_strlen(str), '0');
+	else if (tab->width > ft_strlen(str))
+		str = ft_add_char_to_beg_str(str, tab->width - ft_strlen(str), ' ');
+	tab->t_length += write(1, str, ft_strlen(str));
+	free(str);
+	set_tab(tab);
+}
+
+void	ft_print_dec_num(t_settings *tab)
+{
+	int		nbr;
+	char	*str;
+	char	*ptr;
 
 	nbr = va_arg(tab->args, int);
 	if (!nbr && !tab->precision && tab->point)
@@ -426,22 +448,21 @@ void ft_print_dec_num(frt_settings *tab)
 		str = ft_add_char_to_beg_str(str, 1, '+');
 	else if (tab->space)
 		str = ft_add_char_to_beg_str(str, 1, ' ');
-	if (tab->width > ft_strlen(str) && tab->dash)
-		str = ft_add_char_to_end_str(str, tab->width - ft_strlen(str), ' ');
-	else if (tab->width > ft_strlen(str) && tab->zero)
-		str = ft_add_char_to_beg_str(str, tab->width - ft_strlen(str), '0');
-	else if (tab->width > ft_strlen(str))
-		str = ft_add_char_to_beg_str(str, tab->width - ft_strlen(str), ' ');
+	print_dec_num_block(tab, str);
+}
+
+void	print_unsigned_dec_block(t_settings *tab, char *str)
+{
 	tab->t_length += write(1, str, ft_strlen(str));
 	free(str);
 	set_tab(tab);
 }
 
-void ft_print_unsigned_dec(frt_settings *tab)
+void	ft_print_unsigned_dec(t_settings *tab)
 {
-	unsigned int nbr;
-	char *str;
-	char *ptr;
+	unsigned int	nbr;
+	char			*str;
+	char			*ptr;
 
 	nbr = va_arg(tab->args, unsigned int);
 	if (!nbr && !tab->precision && tab->point)
@@ -460,33 +481,48 @@ void ft_print_unsigned_dec(frt_settings *tab)
 		str = ft_add_char_to_beg_str(str, tab->width - ft_strlen(str), '0');
 	else if (tab->width > ft_strlen(str))
 		str = ft_add_char_to_beg_str(str, tab->width - ft_strlen(str), ' ');
-	tab->t_length += write(1, str, ft_strlen(str));
-	free(str);
-	set_tab(tab);
+	print_unsigned_dec_block(tab, str);
 }
 
-char *ft_uns_int_dec_to_hex(unsigned int i, char a)
+char	*ft_uns_int_dec_to_hex(unsigned int i, char a)
 {
-	char *str;
-	char *mem;
+	char	*str;
+	char	*mem;
 
 	str = malloc(ft_count_digits(i) + 1);
 	if (!str)
 		return (NULL);
 	mem = str;
 	if (a == 'x')
-    	mem = ft_putnbr_base(mem, i, "0123456789abcdef");
+		mem = ft_putnbr_base(mem, i, "0123456789abcdef");
 	else
 		mem = ft_putnbr_base(mem, i, "0123456789ABCDEF");
 	*mem = '\0';
 	return (str);
 }
 
-void ft_print_num_hex(frt_settings *tab, char l)
+void	print_num_hex_block(t_settings *tab, char *str, char l)
 {
-	unsigned int nbr;
-	char *str;
-	char *ptr;
+	if (tab->hash && l == 'x')
+		str = ft_add_char_to_beg_str(str, 1, 'x');
+	else if (tab->hash && l == 'X')
+		str = ft_add_char_to_beg_str(str, 1, 'X');
+	if (tab->hash)
+		str = ft_add_char_to_beg_str(str, 1, '0');
+	if (tab->width > ft_strlen(str) && tab->dash)
+		str = ft_add_char_to_end_str(str, tab->width - ft_strlen(str), ' ');
+	else if (tab->width > ft_strlen(str) && !tab->zero)
+		str = ft_add_char_to_beg_str(str, tab->width - ft_strlen(str), ' ');
+	tab->t_length += write(1, str, ft_strlen(str));
+	free(str);
+	set_tab(tab);
+}
+
+void	ft_print_num_hex(t_settings *tab, char l)
+{
+	unsigned int	nbr;
+	char			*str;
+	char			*ptr;
 
 	nbr = va_arg(tab->args, unsigned int);
 	if (!nbr && !tab->precision && tab->point)
@@ -503,24 +539,12 @@ void ft_print_num_hex(frt_settings *tab, char l)
 		str = ft_add_char_to_beg_str(str, tab->width - ft_strlen(str), '0');
 	else if (tab->width > (ft_strlen(str) + 2) && tab->zero && tab->hash)
 		str = ft_add_char_to_beg_str(str, tab->width - ft_strlen(str) - 2, '0');
-	if (tab->hash && l == 'x') 
-		str = ft_add_char_to_beg_str(str, 1, 'x');
-	else if (tab->hash && l == 'X') 
-		str = ft_add_char_to_beg_str(str, 1, 'X');
-	if (tab->hash)
-		str = ft_add_char_to_beg_str(str, 1, '0');
-	if (tab->width > ft_strlen(str) && tab->dash)
-		str = ft_add_char_to_end_str(str, tab->width - ft_strlen(str), ' ');
-	else if (tab->width > ft_strlen(str) && !tab->zero)
-		str = ft_add_char_to_beg_str(str, tab->width - ft_strlen(str), ' ');
-	tab->t_length += write(1, str, ft_strlen(str));
-	free(str);
-	set_tab(tab);
+	print_num_hex_block(tab, str, l);
 }
 
-int ft_is_format(char letter, char *conversions)
+int	ft_is_format(char letter, char *conversions)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (conversions[++i])
@@ -529,7 +553,7 @@ int ft_is_format(char letter, char *conversions)
 	return (0);
 }
 
-int ft_convert(frt_settings *tab, const char *format, int i)
+int	ft_convert(t_settings *tab, const char *format, int i)
 {
 	while (format[i] && !ft_is_format(format[i], "%cspdiuxX"))
 		i++;
@@ -552,10 +576,10 @@ int ft_convert(frt_settings *tab, const char *format, int i)
 	return (i);
 }
 
-int ft_analise_precision(frt_settings *tab, const char *format, int i)
+int	ft_analise_precision(t_settings *tab, const char *format, int i)
 {
-	int j;
-	char *precision;
+	int		j;
+	char	*precision;
 
 	tab->point = 1;
 	j = i;
@@ -572,10 +596,10 @@ int ft_analise_precision(frt_settings *tab, const char *format, int i)
 	return (i);
 }
 
-int ft_analise_width(frt_settings *tab, const char *format, int i)
+int	ft_analise_width(t_settings *tab, const char *format, int i)
 {
-	int j;
-	char *width;
+	int		j;
+	char	*width;
 
 	j = i;
 	if (format[i] > 48 && format[i] < 58)
@@ -594,9 +618,9 @@ int ft_analise_width(frt_settings *tab, const char *format, int i)
 	return (i);
 }
 
-int is_flag(char letter, char *flags)
+int	is_flag(char letter, char *flags)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (flags[++i])
@@ -605,7 +629,7 @@ int is_flag(char letter, char *flags)
 	return (0);
 }
 
-int ft_analise_flags(frt_settings *tab, const char *format, int i)
+int	ft_analise_flags(t_settings *tab, const char *format, int i)
 {
 	while (is_flag(format[i], "-0# +"))
 	{
@@ -625,13 +649,13 @@ int ft_analise_flags(frt_settings *tab, const char *format, int i)
 	return (i);
 }
 
-int ft_printf(const char *format, ...)
+int	ft_printf(const char *format, ...)
 {
-	frt_settings *tab;
-	int i;
-	int t_printed;
+	t_settings	*tab;
+	int			i;
+	int			t_printed;
 
-	tab = malloc(sizeof(frt_settings));
+	tab = malloc(sizeof(t_settings));
 	if (!tab)
 		return (-1);
 	ft_initialise_tab(tab);
