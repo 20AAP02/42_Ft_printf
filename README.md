@@ -71,3 +71,8 @@ cares for:
 	- and obviously no need to verify if nbr < 0 
 
 - x and X conversions ----
+if '#' add '0x' to beguining of number
+ignore (' ' and '+')
+flags to care for: '-' , '0' and '#'
+precision min size doesn't include '0x'
+width min size does include '0x'
