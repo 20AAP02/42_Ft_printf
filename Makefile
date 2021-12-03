@@ -7,10 +7,10 @@ RM				= /bin/rm -f
 NAME	= libftprintf.a
 
 INCLUDE = .
-SRCS	= ft_printf.c ft_printf_functions0.c ft_printf_functions1.c \
+SRCS	= ft_printf_functions0.c ft_printf_functions1.c \
 					ft_printf_functions2.c ft_printf_functions3.c \
 					ft_printf_functions4.c ft_printf_functions5.c \
-					ft_printf_functions6.c
+					ft_printf_functions6.c  ft_printf.c
 OBJS	= $(SRCS:.c=.o)
 
 all: 		$(NAME) clean
