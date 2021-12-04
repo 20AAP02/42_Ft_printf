@@ -1,11 +1,14 @@
 42_Project
 
 
-order --
+order:
 
 1 - %
+
 2 - zero or more flags
+
 3 - optional minimum field width
+
 4 - optional precision
 
 conversions: (csdiupxX% with #0-+ and ' ') ----
