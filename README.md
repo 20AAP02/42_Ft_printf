@@ -1,22 +1,22 @@
 42_Project
 
 
-order:\n
-1 - %\n
-2 - zero or more flags\n
-3 - optional minimum field width\n
-4 - optional precision\n
+order:  
+1 - %  
+2 - zero or more flags  
+3 - optional minimum field width  
+4 - optional precision  
 
-conversions: (csdiupxX% with #0-+ and ' ') ----\n
+conversions: (csdiupxX% with #0-+ and ' ') ----
 
-(# with x/X) -- add 0x/X to the beguining of the number\n
-0 -- the value should be zero padded\n
-(0 and -) -- ignore 0\n
-(diuxX with . and 0) -- ignore 0 (other conversions the behavior is undefined)\n
-('-') -- the value is to be left adjusted (padded with blanks in the right)\n
-(' ') -- a blank before positive number\n
-('+') -- put sign before number\n
-('+' and ' ') -- ignore ' '\n
+(# with x/X) -- add 0x/X to the beguining of the number
+0 -- the value should be zero padded
+(0 and -) -- ignore 0
+(diuxX with . and 0) -- ignore 0 (other conversions the behavior is undefined)
+('-') -- the value is to be left adjusted (padded with blanks in the right)
+(' ') -- a blank before positive number
+('+') -- put sign before number
+('+' and ' ') -- ignore ' '
 
 minimum field width: -----
 
