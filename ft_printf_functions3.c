@@ -6,7 +6,7 @@
 /*   By: amaria-m <amaria-m@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 16:21:21 by amaria-m          #+#    #+#             */
-/*   Updated: 2021/12/03 18:29:22 by amaria-m         ###   ########.fr       */
+/*   Updated: 2021/12/04 14:53:47 by amaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ char	*long_to_string(unsigned long i)
 	char	*str;
 	char	*mem;
 
-	str = malloc(ft_count_digits(i) + 3);
+	if (i != 0)
+		str = malloc(ft_count_digits(i) + 3);
+	else
+		return (ft_nil("(nil)"));
 	if (!str)
 		return (NULL);
 	str[0] = '0';

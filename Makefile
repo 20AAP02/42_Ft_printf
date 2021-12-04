@@ -19,6 +19,8 @@ $(NAME): 	$(OBJS) $(INCLUDE)
 					$(LIB1) $(NAME) $(OBJS)
 					$(LIB2) $(NAME)
 
+bonus:		$(NAME) clean
+
 .c.o:
 					$(CC) $(CFLAGS) -I$(INCLUDE) -c $< -o $(<:.c=.o)
 clean:
@@ -28,4 +30,6 @@ fclean: 	clean
 
 re: 				fclean all
 
-.PHONY:		all clean fclean re
+rebonus:	fclean bonus
+
+.PHONY:		all clean fclean re bonus rebonus

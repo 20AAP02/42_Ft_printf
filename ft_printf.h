@@ -6,7 +6,7 @@
 /*   By: amaria-m <amaria-m@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 16:58:26 by amaria-m          #+#    #+#             */
-/*   Updated: 2021/12/03 18:24:22 by amaria-m         ###   ########.fr       */
+/*   Updated: 2021/12/04 22:50:53 by amaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ typedef struct t_print_settings
 	int		t_length;
 }	t_settings;
 
+char		*ft_exection_t(char a, char *str);
+char		*ft_nil(char *a);
 int			ft_pf_strlen(const char *s);
 char		*ft_printf_substr(char const *s, unsigned int start, size_t len);
 int			ft_printf_atoi(const char *str);
@@ -51,15 +53,15 @@ char		*ft_putnbr_base(char *str, unsigned long nbr, char *base);
 char		*long_to_string(unsigned long i);
 void		ft_print_p_zero_pad(t_settings *tab, char *str);
 void		ft_print_void(t_settings *tab);
-char		*ft_add_beg_str(char *str, int times, char a);
+char		*ft_add_beg_str(char *str, int times, char a, int t);
 char		*ft_add_char_to_end_str(char *str, int times, char a);
 void		ft_print_dec_update_tab(t_settings *tab);
-void		print_dec_num_block(t_settings *tab, char *str);
+void		print_dec_num_block(t_settings *tab, char *str, int nbr);
 void		ft_print_dec_num(t_settings *tab);
 void		print_unsigned_dec_block(t_settings *tab, char *str);
 void		ft_print_unsigned_dec(t_settings *tab);
 char		*ft_uns_int_dec_to_hex(unsigned int i, char a);
-void		print_num_hex_block(t_settings *tab, char *str, char l);
+void		print_num_hex_block(t_settings *tab, char *str, char l, int nbr);
 void		ft_print_num_hex(t_settings *tab, char l);
 int			ft_is_format(char letter, char *conversions);
 int			ft_convert(t_settings *tab, const char *format, int i);

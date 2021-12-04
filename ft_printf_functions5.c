@@ -6,7 +6,7 @@
 /*   By: amaria-m <amaria-m@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 16:21:42 by amaria-m          #+#    #+#             */
-/*   Updated: 2021/12/03 18:29:22 by amaria-m         ###   ########.fr       */
+/*   Updated: 2021/12/04 22:50:48 by amaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ void	ft_print_unsigned_dec(t_settings *tab)
 		str = ft_printf_itoa_unsigned_int(nbr);
 	ft_print_dec_update_tab(tab);
 	if (tab->prec > ft_pf_strlen(str))
-		str = ft_add_beg_str(str, tab->prec - ft_pf_strlen(str), '0');
+		str = ft_add_beg_str(str, tab->prec - ft_pf_strlen(str), '0', 0);
 	if (tab->width > ft_pf_strlen(str) && tab->dash)
 		str = ft_add_char_to_end_str(str, tab->width - ft_pf_strlen(str), ' ');
 	else if (tab->width > ft_pf_strlen(str) && tab->zero)
-		str = ft_add_beg_str(str, tab->width - ft_pf_strlen(str), '0');
+		str = ft_add_beg_str(str, tab->width - ft_pf_strlen(str), '0', 0);
 	else if (tab->width > ft_pf_strlen(str))
-		str = ft_add_beg_str(str, tab->width - ft_pf_strlen(str), ' ');
+		str = ft_add_beg_str(str, tab->width - ft_pf_strlen(str), ' ', 0);
 	print_unsigned_dec_block(tab, str);
 }
 
@@ -61,18 +61,18 @@ char	*ft_uns_int_dec_to_hex(unsigned int i, char a)
 	return (str);
 }
 
-void	print_num_hex_block(t_settings *tab, char *str, char l)
+void	print_num_hex_block(t_settings *tab, char *str, char l, int nbr)
 {
-	if (tab->hash && l == 'x')
-		str = ft_add_beg_str(str, 1, 'x');
-	else if (tab->hash && l == 'X')
-		str = ft_add_beg_str(str, 1, 'X');
-	if (tab->hash)
-		str = ft_add_beg_str(str, 1, '0');
+	if (tab->hash && l == 'x' && nbr)
+		str = ft_add_beg_str(str, 1, 'x', 0);
+	else if (tab->hash && l == 'X' && nbr)
+		str = ft_add_beg_str(str, 1, 'X', 0);
+	if (tab->hash && nbr)
+		str = ft_add_beg_str(str, 1, '0', 0);
 	if (tab->width > ft_pf_strlen(str) && tab->dash)
 		str = ft_add_char_to_end_str(str, tab->width - ft_pf_strlen(str), ' ');
 	else if (tab->width > ft_pf_strlen(str) && !tab->zero)
-		str = ft_add_beg_str(str, tab->width - ft_pf_strlen(str), ' ');
+		str = ft_add_beg_str(str, tab->width - ft_pf_strlen(str), ' ', 0);
 	tab->t_length += write(1, str, ft_pf_strlen(str));
 	free(str);
 	set_tab(tab);
@@ -93,10 +93,10 @@ void	ft_print_num_hex(t_settings *tab, char l)
 		str = ft_uns_int_dec_to_hex(nbr, l);
 	ft_print_dec_update_tab(tab);
 	if (tab->prec > ft_pf_strlen(str))
-		str = ft_add_beg_str(str, tab->prec - ft_pf_strlen(str), '0');
+		str = ft_add_beg_str(str, tab->prec - ft_pf_strlen(str), '0', 0);
 	if (tab->width > ft_pf_strlen(str) && tab->zero && !tab->hash)
-		str = ft_add_beg_str(str, tab->width - ft_pf_strlen(str), '0');
+		str = ft_add_beg_str(str, tab->width - ft_pf_strlen(str), '0', 0);
 	else if (tab->width > (ft_pf_strlen(str) + 2) && tab->zero && tab->hash)
-		str = ft_add_beg_str(str, tab->width - ft_pf_strlen(str) - 2, '0');
-	print_num_hex_block(tab, str, l);
+		str = ft_add_beg_str(str, tab->width - ft_pf_strlen(str) - 2, '0', 0);
+	print_num_hex_block(tab, str, l, nbr);
 }

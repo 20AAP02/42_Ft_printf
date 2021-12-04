@@ -6,7 +6,7 @@
 /*   By: amaria-m <amaria-m@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 16:21:09 by amaria-m          #+#    #+#             */
-/*   Updated: 2021/12/03 18:29:22 by amaria-m         ###   ########.fr       */
+/*   Updated: 2021/12/04 14:58:28 by amaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,11 @@ void	ft_print_string(t_settings *tab)
 	char	*str;
 
 	str = va_arg(tab->args, char *);
-	if (tab->width)
+	if (str == NULL)
+	{
+		tab->t_length = write(1, "(null)", 6);
+	}
+	else if (tab->width)
 	{
 		if (tab->dash)
 			ft_print_s_dash(tab, str);

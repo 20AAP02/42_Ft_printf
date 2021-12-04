@@ -6,11 +6,32 @@
 /*   By: amaria-m <amaria-m@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 16:22:20 by amaria-m          #+#    #+#             */
-/*   Updated: 2021/12/03 18:30:21 by amaria-m         ###   ########.fr       */
+/*   Updated: 2021/12/04 22:39:48 by amaria-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+char	*ft_exection_t(char a, char *str)
+{
+	*str = a;
+	return (str);
+}
+
+char	*ft_nil(char *a)
+{
+	char	*str;
+	char	*ptr;
+
+	str = malloc(ft_pf_strlen(a) + 1);
+	if (!str)
+		return (NULL);
+	ptr = str;
+	while (*a)
+		*str++ = *a++;
+	*str = '\0';
+	return (ptr);
+}
 
 int	ft_analise_flags(t_settings *tab, const char *format, int i)
 {
