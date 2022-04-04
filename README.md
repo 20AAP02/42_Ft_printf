@@ -36,10 +36,9 @@ Although wide in scope, it’s not a difficult project (aside from having to dis
 <p>2sd - zero or more flags</p>
 <p>3th - optional minimum field width</p>
 <p>4th - optional precision</p>
-<p>5th - the conversion letter/sign</p>
+<p>5th - the conversion letter/sign (csdiupxX%)</p>
 
-<h4>- The order you must read the flags</h4> 
-conversions: (csdiupxX% with #0-+ and ' ') ----  
+<h4>- The Flags (#0-+ and ' ')</h4>   
   
 (# with x/X) -- add 0x/X to the beguining of the number  
 0 -- the value should be zero padded  
