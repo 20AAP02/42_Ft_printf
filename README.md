@@ -16,9 +16,9 @@ https://github.com/20AAP02/get_next_line/blob/master/en.subject.pdf
 
 -----
 
-<h4>Grade : 112%</h4>
+<h4>Grade : 125%</h4>
 <h6>Mandatory : 100/100</h6>
-<h6>Bonus : 12/25</h6>
+<h6>Bonus : 25/25</h6>
 
 
 
