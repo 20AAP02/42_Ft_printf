@@ -49,18 +49,17 @@ Although wide in scope, it’s not a difficult project (aside from having to dis
 ('+') -- put sign before number  
 ('+' and ' ') -- ignore ' '  
 
-minimum field width: -----  
+<h4>- Minimum field width</h4>  
   
 if converted value has fewer characters than the field width, pad with spaces   
   
-precision:'.' ----  
+<h4>Precision (.)</h4> 
   
 (if only '.') -- precision is zero  
 (with diuxX) -- gives the minimum number of digits to appear  
 (with s) -- gives the maximum number of characters to be printed  
   
-  
-- c conversion ----  
+<h4>- c conversions</h4>
 care for:  
 -width  
 -dash  
