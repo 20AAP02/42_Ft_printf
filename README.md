@@ -22,11 +22,14 @@ https://github.com/20AAP02/get_next_line/blob/master/en.subject.pdf
 
 -----
 
+<h4>My Aproach</h4>
 <p>
 Ft_printf is a project that mimics the real printf function.
 Although wide in scope, it’s not a difficult project (aside from having to discover all the possible combination of flags through testing).
 </p>
 <p>If you are interest to build your own implementation of printf, there are already some articles out there. If you find yourself stuck, without kwnowing where to start I would recommend you to read this article: https://csnotes.medium.com/ft-printf-tutorial-42project-f09b6dc1cd0e </p>
+
+-----
 
 order:  
 1 - %  
