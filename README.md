@@ -94,10 +94,10 @@ cares for:
 		else : add spaces to beguining of str  
   
 - i conversions ----  
-- same as d conversion  
+same as d conversion  
    
 - u conversions ----  
-- same as d conversion a side from:  
+same as d conversion a side from:  
 	- va_arg receives an unsigned int (instead of a int)  
 	- itoa has to receive an unsigned int (instead of a int)  
 	- '+' and ' ' flags are ignored  
