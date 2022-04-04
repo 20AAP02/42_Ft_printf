@@ -5,7 +5,7 @@
 
 -----
 
-<h4>What I lerned with this project?</h4>
+<h4>What I learned with this project?</h4>
 <p>- I learned about variadic functions and how to implement those</p>
 <p>- I learned more about printf options 😏</p>
 
