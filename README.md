@@ -59,7 +59,7 @@ if converted value has fewer characters than the field width, pad with spaces
 (with diuxX) -- gives the minimum number of digits to appear  
 (with s) -- gives the maximum number of characters to be printed  
   
-<h4>- c conversions</h4>
+- c conversions ----  
 care for:  
 -width  
 -dash  
