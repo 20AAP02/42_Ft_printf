@@ -12,7 +12,7 @@
 -----
 
 <h4>Subject</h4>
-https://github.com/20AAP02/get_next_line/blob/master/en.subject.pdf
+https://github.com/20AAP02/ft_printf/blob/master/en.subject.pdf
 
 -----
 
