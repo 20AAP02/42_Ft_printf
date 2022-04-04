@@ -1,4 +1,4 @@
-<h1 align="center"> Get_next_line | 42 School Project </h1>
+<h1 align="center"> Ft_printf | 42 School Project </h1>
 <h4>Because putnbr() and putstr() aren’t enough</h4>
 <p>This project was pretty straightforward, I had to recode printf.</p>
 <p>The mandatory part of this project didn't include printf's flags, but since I also did the bonus, this implementation of printf includes almost all printf flags, plus precision and width.</p> 
@@ -20,7 +20,13 @@ https://github.com/20AAP02/get_next_line/blob/master/en.subject.pdf
 <h6>Mandatory : 100/100</h6>
 <h6>Bonus : 25/25</h6>
 
+-----
 
+<p>
+Ft_printf is a project that mimics the real printf function.
+Although wide in scope, it’s not a difficult project (aside from having to discover all the possible combination of flags through testing).
+</p>
+<p>If you are interest to build your own implementation of printf, there are already some articles out there. If you find yourself stuck, without kwnowing where to start I would recommend you to read this article: https://csnotes.medium.com/ft-printf-tutorial-42project-f09b6dc1cd0e </p>
 
 order:  
 1 - %  
