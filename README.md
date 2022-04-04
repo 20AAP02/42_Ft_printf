@@ -31,14 +31,14 @@ Although wide in scope, it’s not a difficult project (aside from having to dis
 
 <p>Has I have said, the hardest part, is to mimic all the possible combinations of flags that printf has. So I tried to keep some notes of this combinations while I discovered them throught some testing. Here they are. It might be a bit desorganized, but I hope it helps...</p>
 
-<h5>The order you must read the flags</h5> 
+<h4>- The order you must read the flags</h4> 
 <p>1st - %</p>
 <p>2sd - zero or more flags</p>
 <p>3th - optional minimum field width</p>
 <p>4th - optional precision</p>
 <p>5th - the conversion letter/sign</p>
 
-<h5>The order you must read the flags</h5> 
+<h4>- The order you must read the flags</h4> 
 conversions: (csdiupxX% with #0-+ and ' ') ----  
   
 (# with x/X) -- add 0x/X to the beguining of the number  
