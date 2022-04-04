@@ -22,21 +22,23 @@ https://github.com/20AAP02/get_next_line/blob/master/en.subject.pdf
 
 -----
 
-<h4>My Aproach</h4>
+<h3>My Aproach</h3>
 <p>
 Ft_printf is a project that mimics the real printf function.
 Although wide in scope, it’s not a difficult project (aside from having to discover all the possible combination of flags through testing).
 </p>
-<p>If you are interest to build your own implementation of printf, there are already some articles out there. If you find yourself stuck, without kwnowing where to start I would recommend you to read this article: https://csnotes.medium.com/ft-printf-tutorial-42project-f09b6dc1cd0e </p>
+<p>If you are interest to build your own implementation of printf, there are already some articles out there. If you find yourself stuck, without kwnowing where to start I would recommend you to read this one: https://csnotes.medium.com/ft-printf-tutorial-42project-f09b6dc1cd0e </p>
 
------
+<p>Has I have said, the hardest part, is to mimic all the possible combinations of flags that printf has. So I tried to keep some notes of this combinations while I discovered them throught some testing. Here they are. It might be a bit desorganized, but I hope it helps...</p>
 
-order:  
-1 - %  
-2 - zero or more flags  
-3 - optional minimum field width  
-4 - optional precision  
+<h5>The order you must read the flags</h5> 
+1st - %  
+2sd - zero or more flags  
+3th - optional minimum field width  
+4th - optional precision  
+5th - the conversion letter/sign
 
+<h5>The order you must read the flags</h5> 
 conversions: (csdiupxX% with #0-+ and ' ') ----  
   
 (# with x/X) -- add 0x/X to the beguining of the number  
