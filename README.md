@@ -26,7 +26,9 @@ https://github.com/20AAP02/ft_printf/blob/master/en.subject.pdf
 
 ```
 git clone https://github.com/20AAP02/42_Ft_printf.git ft_printf
+
 cd ft_printf
+
 make
 ```
 
