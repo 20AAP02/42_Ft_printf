@@ -22,13 +22,11 @@ https://github.com/20AAP02/ft_printf/blob/master/en.subject.pdf
 
 -----
 
-<h5>Create library that contains ft_printf</h5>
+<h4>Create library that contains ft_printf</h4>
 
 ```
 git clone https://github.com/20AAP02/42_Ft_printf.git ft_printf
-
 cd ft_printf
-
 make
 ```
 
